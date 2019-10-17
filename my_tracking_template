@@ -1,0 +1,86 @@
+# This should be used for tracking for 10000 turns. IT saves the turn by turn data only for the first and last 1000 turns.  The purpose of this script is t ocreate smaller files as 1) pandas fails for saving 10k turns and 2) for less storage occupancy of the file. If this is the study you want to run you should cp to my_tracking_template. 
+import os
+import sys
+import numpy as np
+from math import *
+import pandas as pd
+import random
+from dotted_dict import DottedDict
+sys.path.append('/afs/cern.ch/work/n/natriant/private/my_tracking_model_htcondor/utils')
+from my_elements import *
+from my_machines import *
+from my_functions import *
+
+
+# Define the machine parameters
+f_rev = %f_rev # revolution frequency [Hz]
+# Relativistic parameters
+gamma_rel = %gamma_rel # from madx twiss
+beta_rel = sqrt(1-(1/gamma_rel)**2)
+# Twiss parameters
+twiss = DottedDict()
+twiss.beta_x = %betax #at IP3 #obtained from madx twiss. should be crossed check
+twiss.beta_y = %betay
+twiss.alpha_x = %alphax
+twiss.alpha_y = %alphay
+twiss.gamma_x = (1+twiss.alpha_x**2)/twiss.beta_x
+twiss.gamma_y = (1+twiss.alpha_y**2)/twiss.beta_y
+
+
+Qx_init = 2*pi*%Qx_init
+Qy_init = 2*pi*%Qy_init
+
+# Define the study parameters
+turns = %turns
+particles = %particles
+ex_norm = %ex_norm # [m]
+
+ex_geom = ex_norm/(beta_rel*gamma_rel)
+#ex_geom = 0.047#*1e-9 #for SCC
+sigma_x = sqrt(twiss.beta_x*ex_geom)
+sigma_px = sqrt(ex_geom/twiss.beta_x)
+print(sigma_x, sigma_px)
+
+# Define the configuration of the machine
+flag_oct = %flag_oct
+flag_noise = %flag_noise
+flag_BB = %flag_BB
+flag_feedback = %flag_feedback
+k3 = %k3_int
+segments = %segments
+Delta = %delta*sigma_px #normalised in beam sigma , xaviers
+ksi = %ksi
+gain = %g*sigma_px
+elements_list = [flag_oct, flag_noise, flag_BB, flag_feedback]
+elements_list_str = ['oct', 'noise', 'BB', 'feedback']
+study_name = ''
+for index,element in enumerate(elements_list):
+    if element == True:
+        study_name = study_name + elements_list_str[index]+ '_'
+print(study_name)
+
+
+# Create the initial distribution
+bunch = create_bunch(particles)
+# Set up the initial distribution. Gaussian, with sigma = sigma_x
+mu, sigma = 0.0, 1 # mean and standard deviation
+x_initial = np.random.normal(mu, sigma, particles)*sigma_x
+px_initial = np.random.normal(mu, sigma, particles)*sigma_px
+bunch.x = x_initial
+bunch.px = px_initial
+# Create the data frame to save the distribution
+df = pd.DataFrame({'turn':[], 'x':[], 'px':[], 'y':[], 'py':[]})
+# Append the initial values, physical coordinates
+df = df.append({'turn':0.0, 'x':bunch.x, 'px':bunch.px, 'y':bunch.y, 'py':bunch.py}, ignore_index = True)
+
+
+# Do the tracking
+for turn in range(1, turns): #we start form 1 as we have already include the intiial conditions
+    bunch = my_machine(Qx_init, Qy_init, segments, k3, turn, bunch, twiss, flag_oct, flag_noise, flag_BB, flag_feedback, Delta, ksi, gain, sigma_x, sigma_px)
+    if turn <= 1000 or turn >=9000:
+      df = df.append({'turn':turn, 'x':bunch.x, 'px':bunch.px, 'y':bunch.y, 'py':bunch.py}, ignore_index = True)
+# Save the file
+if flag_BB:
+  df.to_pickle('/afs/cern.ch/work/n/natriant/private/my_tracking_model_htcondor/tracking_data/Qx{:.3f}_ksi{:.3f}_g{:.3f}_delta{:.3f}_betax{}_particles{}_turns{}.pkl'.format(Qx_init/(2*pi), ksi, gain/sigma_px, Delta/sigma_px, twiss.beta_x, particles, turns))
+if flag_oct:
+  df.to_pickle('/afs/cern.ch/work/n/natriant/private/my_tracking_model_htcondor/tracking_data/Qx{:.3f}_k3_int{}_g{:.3f}_delta{:.3f}_betax{}_particles{}_turns{}.pkl'.format(Qx_init/(2*pi), k3, gain/sigma_px, Delta/sigma_px, twiss.beta_x, particles, turns))
