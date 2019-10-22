@@ -5,12 +5,13 @@ import numpy as np
 from math import *
 
 df = pd.read_pickle('Qx62.775_k3_int5825.61_g0.200_delta1.000_betax115.75_particles15000_turns1000.pkl')
-#print(df.at[800,'px'])
+print(df['px'])
 
 # Set True the corresponding flag
 plot_evolution_of_a_particle = False
 plot_evolution_of_the_mean = False
-print_info_for_each_aprticle = True
+print_info_for_each_aprticle = False
+
 
 
 if print_info_for_each_aprticle:

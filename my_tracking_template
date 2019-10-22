@@ -46,6 +46,7 @@ flag_oct = %flag_oct
 flag_noise = %flag_noise
 flag_BB = %flag_BB
 flag_feedback = %flag_feedback
+max_aperture_value = %max_aperture_value
 k3 = %k3_int
 segments = %segments
 Delta = %delta*sigma_px #normalised in beam sigma , xaviers
@@ -76,7 +77,7 @@ df = df.append({'turn':0.0, 'x':bunch.x, 'px':bunch.px, 'y':bunch.y, 'py':bunch.
 
 # Do the tracking
 for turn in range(1, turns): #we start form 1 as we have already include the intiial conditions
-    bunch = my_machine(Qx_init, Qy_init, segments, k3, turn, bunch, twiss, flag_oct, flag_noise, flag_BB, flag_feedback, Delta, ksi, gain, sigma_x, sigma_px)
+    bunch = my_machine(Qx_init, Qy_init, segments, k3, turn, bunch, twiss, flag_oct, flag_noise, flag_BB, flag_feedback, max_aperture_value, Delta, ksi, gain, sigma_x, sigma_px)
     if turn <= 1000 or turn >=9000:
       df = df.append({'turn':turn, 'x':bunch.x, 'px':bunch.px, 'y':bunch.y, 'py':bunch.py}, ignore_index = True)
 # Save the file

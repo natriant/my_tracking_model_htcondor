@@ -55,12 +55,12 @@ for xi in BB_list:
 			f.close
 			
 			# old words
-			checkWords = ('%f_rev', '%gamma_rel', '%betax', '%betay', '%alphax', '%alphay', '%Qx_init', '%Qy_init', '%turns', '%particles', '%ex_norm', '%flag_oct', '%flag_noise', '%flag_BB', '%flag_feedback', '%k3_int', '%segments', '%delta', '%ksi', '%g')
+			checkWords = ('%f_rev', '%gamma_rel', '%betax', '%betay', '%alphax', '%alphay', '%Qx_init', '%Qy_init', '%turns', '%particles', '%ex_norm', '%flag_oct', '%flag_noise', '%flag_BB', '%flag_feedback', '%max_aperture_value', '%k3_int', '%segments', '%delta', '%ksi', '%g')
 			
 			g_str = "{}".format(g)
 			xi_str = "{}".format(xi)	
 			# new words
-			repWords = (str(data['machine_parameters']['f_rev']), str(data['machine_parameters']['gamma_rel']), str(data['machine_parameters']['beta_x']), str(data['machine_parameters']['beta_y']), str(data['machine_parameters']['alpha_x']) , str(data['machine_parameters']['alpha_y']), str(data['machine_parameters']['Qx_init']), str(data['machine_parameters']['Qy_init']), str(data['study_parameters']['turns']),  str(data['study_parameters']['particles']), str(data['study_parameters']['ex_norm']),  str(data['octupole']['status']), str(data['Noise']['status']), str(data['BB']['status']), str(data['Feedback']['status']), str(data['octupole']['k3_int']), str(data['study_parameters']['segments']), str(delta), xi_str,g_str)
+			repWords = (str(data['machine_parameters']['f_rev']), str(data['machine_parameters']['gamma_rel']), str(data['machine_parameters']['beta_x']), str(data['machine_parameters']['beta_y']), str(data['machine_parameters']['alpha_x']) , str(data['machine_parameters']['alpha_y']), str(data['machine_parameters']['Qx_init']), str(data['machine_parameters']['Qy_init']), str(data['study_parameters']['turns']),  str(data['study_parameters']['particles']), str(data['study_parameters']['ex_norm']),  str(data['octupole']['status']), str(data['Noise']['status']), str(data['BB']['status']), str(data['Feedback']['status']), str(data['study_parameters']['aperture_max']), str(data['octupole']['k3_int']), str(data['study_parameters']['segments']), str(delta), xi_str,g_str)
 
 
 			# Open the new file here

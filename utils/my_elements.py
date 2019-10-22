@@ -57,3 +57,13 @@ def feedback_system_map(gain, sigmapx, x, px, y, py):
     y1 = y
     py1 = py - gain*py_average
     return x1, px1, y1, py1
+
+def aperture_limits_x_px_y_py(max_aperture_value, x, px, y, py):
+    # Aperure function to manage particle losses. It is defined as a condition of the phase space coordinates, set by the user, in [m].
+    # The coordinates of the particles not fulfilling this condition are set as NaN. The physical coordinates are used. 
+    x1, px1, y1, py1 = x, px, y, py # type: nd.array()
+    for i in range(len(x1)): # all the arrays have the same length, x1 was chosen arbitrary
+        if x1[i]>max_aperture_value or px1[i]>max_aperture_value or y1[i]>max_aperture_value or py1[i]>max_aperture_value:
+            x1[i] = px1[i]= y1[i] = py1[i] = np.nan 
+            
+    return x1, px1, y1, py1

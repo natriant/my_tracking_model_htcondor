@@ -13,7 +13,8 @@
     "turns": 1000,
     "particles": 15000,
     "ex_norm": 2.5e-6,
-    "segments":8
+    "segments":8,
+    "aperture_max":1.0
   },
   "octupole":{
       "status":true,

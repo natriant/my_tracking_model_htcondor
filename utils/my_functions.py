@@ -15,11 +15,11 @@ def create_bunch(particles):
 
 # #--- <x^2> ---
 def mean2(numb):
-    return np.mean( (numb - np.mean(numb))**2 )
+    return np.nanmean( (numb - np.nanmean(numb))**2 )
 
 # #--- <xx'> ---
 def mean3(numbx , numbpx):
-    return np.mean( (numbx - np.mean(numbx)) * (numbpx - np.mean(numbpx)) )
+    return np.nanmean( (numbx - np.nanmean(numbx)) * (numbpx - np.nanmean(numbpx)) )
 
 # #--- sqrt(<x^2> * <px^2> - <xx'>^2) --- compute statistical emittance
 def cmp_emit(position, angle):
