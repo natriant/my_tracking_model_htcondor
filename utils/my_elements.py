@@ -16,6 +16,14 @@ def rotation(Qx_rot, Qy_rot, twiss, x, px, y, py):
     py1 = -twiss.gamma_y*sin(Qy_rot)*y+ (cos(Qy_rot)- twiss.alpha_y*sin(Qy_rot))*py
     return x1, px1, y1, py1
 
+def rotation_with_detuners(particles_tunes_x, Qx_rot, Qy_rot, twiss, x, px, y, py):
+    Qx_new = Qx_rot+ 2*np.pi*particles_tunes_x
+    x1 = (np.cos(Qx_new) + twiss.alpha_x*np.sin(Qx_new))*x + twiss.beta_x*np.sin(Qx_new)*px
+    px1 = -twiss.gamma_x*np.sin(Qx_new)*x+ (np.cos(Qx_new)-twiss.alpha_x*np.sin(Qx_new))*px
+    y1 = (cos(Qy_rot) + twiss.alpha_y*sin(Qy_rot))*y + twiss.beta_y*sin(Qy_rot)*py
+    py1 = -twiss.gamma_y*sin(Qy_rot)*y+ (cos(Qy_rot)- twiss.alpha_y*sin(Qy_rot))*py
+    return x1, px1, y1, py1
+
 def octupole_map(k3, x, px, y, py):
     k3_kick = k3/6.
     x1 = x
@@ -67,3 +75,15 @@ def aperture_limits_x_px_y_py(max_aperture_value, x, px, y, py):
             x1[i] = px1[i]= y1[i] = py1[i] = np.nan 
             
     return x1, px1, y1, py1
+
+def amplitude_detuning(k3_equivalent, twiss, x, px, y, py):
+    # Function that introduces detuning with amplitude like the one introduced by octupoles
+    x1, px1, y1, py1 = x, px, y, py # type: nd.array()
+    
+    x1_norm, px1_norm = x1/sqrt(twiss.beta_x), px1*sqrt(twiss.beta_x) # late on include alpha and gamma to be correct in every case
+    Jx = (x1_norm**2 + px1_norm**2)/2. # actions for each particle 
+    
+    a_xx = (1/(8*np.pi))*k3_equivalent*(twiss.beta_x**2) # the detuning coefficient
+    particles_tunes_x = a_xx*Jx/2. # DQ(Jx)
+    return particles_tunes_x
+

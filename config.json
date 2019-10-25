@@ -14,10 +14,10 @@
     "particles": 15000,
     "ex_norm": 2.5e-6,
     "segments":8,
-    "aperture_max":1.0
+    "aperture_max":3e-2
   },
   "octupole":{
-      "status":true,
+      "status":false,
       "k3_int": 5825.61
   },
 
@@ -30,7 +30,7 @@
     }
   },
   "Noise": {
-    "status": true,
+    "status": false,
     "values_limits": {
       "min": 1.0,
       "max": 1.0,
@@ -38,11 +38,15 @@
     }
   },
   "Feedback": {
-    "status": true,
+    "status": false,
     "values_limits": {
       "min": 0.2,
       "max": 0.2,
       "step": 1
     }
+  },
+  "Amplitude_Detuner": {
+    "status": true,
+    "k3_equivalent": 5825.61
   }
 }

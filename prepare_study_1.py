@@ -36,11 +36,14 @@ my_studies_list = []
 for xi in BB_list:
 	for delta in Noise_list:
 		for g in Feedback_list:
-		  
+                        # Create the name of the study, according to the elements that are present, maybe create a seperate function afterwards		  
 			name = 'Qx{:.3f}_xi{:.3f}_g{:.3f}_delta{:.3f}_betax{}_particles{}_turns{}'.format(data['machine_parameters']['Qx_init'], xi, g, delta, data['machine_parameters']['beta_x'],  data['study_parameters']['particles'],  data['study_parameters']['turns'])
 			
 			if data['octupole']['status']: #introduce tune spread with octupole instead of BB
 				name = 'Qx{:.3f}_k3_int{:.3f}_segments{}_g{:.3f}_delta{:.3f}_betax{}_particles{}_turns{}'.format(data['machine_parameters']['Qx_init'], data['octupole']['k3_int'] , data['study_parameters']['segments'], g, delta, data['machine_parameters']['beta_x'],  data['study_parameters']['particles'],  data['study_parameters']['turns'])
+			if data['Amplitude_Detuner']['status']: # introduce tune spread with amplitude, with phase advance (like the one from an octupole)
+				name = 'Qx{:.3f}_detuner{:.3f}_g{:.3f}_delta{:.3f}_betax{}_particles{}_turns{}'.format(data['machine_parameters']['Qx_init'], data['Amplitude_Detuner']['k3_equivalent'] , g, delta, data['machine_parameters']['beta_x'],  data['study_parameters']['particles'],  data['study_parameters']['turns'])
+
 			my_studies_list.append(name)
 			# create the direcotry for the study
 			if not os.path.exists(name):
@@ -55,12 +58,13 @@ for xi in BB_list:
 			f.close
 			
 			# old words
-			checkWords = ('%f_rev', '%gamma_rel', '%betax', '%betay', '%alphax', '%alphay', '%Qx_init', '%Qy_init', '%turns', '%particles', '%ex_norm', '%flag_oct', '%flag_noise', '%flag_BB', '%flag_feedback', '%max_aperture_value', '%k3_int', '%segments', '%delta', '%ksi', '%g')
+			checkWords = ('%f_rev', '%gamma_rel', '%betax', '%betay', '%alphax', '%alphay', '%Qx_init', '%Qy_init', '%turns', '%particles', '%ex_norm', '%flag_oct', '%flag_noise', '%flag_BB', '%flag_feedback', '%flag_detuner', '%max_aperture_value', '%k3_int', '%k3_equivalent', '%segments', '%delta', '%ksi', '%g')
 			
 			g_str = "{}".format(g)
 			xi_str = "{}".format(xi)	
+
 			# new words
-			repWords = (str(data['machine_parameters']['f_rev']), str(data['machine_parameters']['gamma_rel']), str(data['machine_parameters']['beta_x']), str(data['machine_parameters']['beta_y']), str(data['machine_parameters']['alpha_x']) , str(data['machine_parameters']['alpha_y']), str(data['machine_parameters']['Qx_init']), str(data['machine_parameters']['Qy_init']), str(data['study_parameters']['turns']),  str(data['study_parameters']['particles']), str(data['study_parameters']['ex_norm']),  str(data['octupole']['status']), str(data['Noise']['status']), str(data['BB']['status']), str(data['Feedback']['status']), str(data['study_parameters']['aperture_max']), str(data['octupole']['k3_int']), str(data['study_parameters']['segments']), str(delta), xi_str,g_str)
+			repWords = (str(data['machine_parameters']['f_rev']), str(data['machine_parameters']['gamma_rel']), str(data['machine_parameters']['beta_x']), str(data['machine_parameters']['beta_y']), str(data['machine_parameters']['alpha_x']) , str(data['machine_parameters']['alpha_y']), str(data['machine_parameters']['Qx_init']), str(data['machine_parameters']['Qy_init']), str(data['study_parameters']['turns']),  str(data['study_parameters']['particles']), str(data['study_parameters']['ex_norm']),  str(data['octupole']['status']), str(data['Noise']['status']), str(data['BB']['status']), str(data['Feedback']['status']), str(data['Amplitude_Detuner']['status']),str(data['study_parameters']['aperture_max']), str(data['octupole']['k3_int']), str(data['Amplitude_Detuner']['k3_equivalent']), str(data['study_parameters']['segments']), str(delta), xi_str,g_str)
 
 
 			# Open the new file here
@@ -75,7 +79,6 @@ for xi in BB_list:
 
 
 print(my_studies_list)		 
-
 
 
 
