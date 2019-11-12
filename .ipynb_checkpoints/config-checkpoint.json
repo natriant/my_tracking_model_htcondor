@@ -3,19 +3,18 @@
     "f_rev": 11.2455e3,
     "gamma_rel": 7460.52252807237,
     "beta_x": 115.75,
-    "beta_y": 115.75,
+    "beta_y": 1.0,
     "alpha_x": 0,
     "alpha_y": 0,
     "Qx_init": 62.775,
-    "Qy_init": 62.775
+    "Qy_init": 62.32
   },
   "study_parameters": {
     "turns": 1000,
     "particles": 15000,
     "ex_norm": 2.5e-6,
-    "ey_norm": 2.5e-6,
     "segments":8,
-    "aperture_max": 3e-2
+    "aperture_max":3e-2
   },
   "octupole":{
       "status":false,
@@ -48,7 +47,6 @@
   },
   "Amplitude_Detuner": {
     "status": true,
-    "k3_equivalent_x": 5825.61,
-    "k3_equivalent_y": 0.0
+    "k3_equivalent": 5825.61
   }
 }
