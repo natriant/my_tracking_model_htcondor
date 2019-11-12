@@ -105,4 +105,4 @@ if flag_BB:
 if flag_oct:
   df.to_pickle('/afs/cern.ch/work/n/natriant/private/my_tracking_model_htcondor/tracking_data/Qx{:.3f}_Qy{:.3f}_k3_int{}_segments{}_g{:.3f}_delta{:.3f}_betax{}_betay{}_particles{}_turns{}.pkl'.format(Qx_init/(2*pi), Qy_init/(2*pi), k3, segments, gain, Delta, twiss.beta_x, twiss.beta_y, particles, turns))
 if flag_detuner:
-  df.to_pickle('/afs/cern.ch/work/n/natriant/private/my_tracking_model_htcondor/tracking_data/Qx{:.3f}_Qy{:.3f}_detunerx{}_detunery{}_g{:.3f}_delta{:.3f}_betax{}_betay{}_particles{}_turns{}.pkl'.format(Qx_init/(2*pi), Qy_init/(2*pi), k3, gain, Delta, twiss.beta_x, twiss.beta_y, particles, turns))
+  df.to_pickle('/afs/cern.ch/work/n/natriant/private/my_tracking_model_htcondor/tracking_data/Qx{:.3f}_Qy{:.3f}_detunerx{}_detunery{}_g{:.3f}_delta{:.3f}_betax{}_betay{}_particles{}_turns{}.pkl'.format(Qx_init/(2*pi), Qy_init/(2*pi), k3_equivalent_x, k3_equivalent_y, gain, Delta, twiss.beta_x, twiss.beta_y, particles, turns))
